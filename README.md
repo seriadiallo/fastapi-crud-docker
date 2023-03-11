@@ -6,7 +6,11 @@ Check out the [post](https://testdriven.io/blog/fastapi-crud).
 
 ## Want to use this project?
 
-Build the images and run the containers:
+- Get the image from docker hub
+  
+  Find the image [here](https://hub.docker.com/r/seriadiallo/fastapi-githubactions)
+
+- Build the images and run the containers:
 
 ```sh
 $ docker-compose up -d --build
