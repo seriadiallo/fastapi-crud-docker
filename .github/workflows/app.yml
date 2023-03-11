@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: seriadiallo/fastapi-githubactions
 
 jobs:
-  Mkdocs-project-ci:
+  Fastapi-project-ci:
     runs-on: ubuntu-latest
     steps:
       - name: "Cloning repository"
