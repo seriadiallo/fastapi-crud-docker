@@ -12,14 +12,44 @@ on:
       - dev
 env:
   IMAGE_NAME: seriadiallo/fastapi-githubactions
+ 
 
 jobs:
   Fastapi-project-ci:
     runs-on: ubuntu-latest
+    env:
+      MY_POSTGRES_USER: postgres
+      MY_POSTGRES_PASSWORD: postgres
+      MY_POSTGRES_DB: testingdb
+    services:
+      postgres_main:
+        image: postgres:12
+        env:
+          POSTGRES_USER: ${{ env.MY_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.MY_POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.MY_POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
     steps:
       - name: "Cloning repository"
         uses: actions/checkout@v3
-
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+      - name: running tests
+        env:
+          DATABASE_URL: postgres:postgres@localhost:5432/testingdb
+        run: |
+          pytest src
       - name: Login to docker
         run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
       - name: Build docker image
