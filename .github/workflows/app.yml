@@ -47,7 +47,7 @@ jobs:
           pip install -r src/requirements.txt
       - name: running tests
         env:
-          DATABASE_URL: postgres:postgres@localhost:5432/testingdb
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testingdb
         run: |
           pytest src
       - name: Login to docker
